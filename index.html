@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Corrida dos Jogadores</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #f3f3f3, #dfe9f3);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #canvas-container {
+      margin-top: 30px;
+      border: 5px solid #444;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+
+    .instructions {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #03A9F4;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #0288D1;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🏁 Corrida dos Jogadores 🏁</h1>
+
+  <div class="instructions">
+    Pressione <strong>A</strong> para o Jogador 1 e <strong>L</strong> para o Jogador 2
+  </div>
+
+  <div id="canvas-container"></div>
+
+  <button class="button" onclick="reiniciarJogo()">🔄 Reiniciar Jogo</button>
+
+  <script>
+    let xJogador1 = 50;
+    let xJogador2 = 50;
+    let vencedor = "";
+
+    function setup() {
+      let canvas = createCanvas(400, 400);
+      canvas.parent("canvas-container");
+      textAlign(LEFT, CENTER);
+      textFont("Segoe UI");
+    }
+
+    function draw() {
+      ativaJogo();
+      desenhaJogadores();
+      desenhaLinhaDeChegada();
+      verificaVencedor();
+    }
+
+    function ativaJogo() {
+      if (focused) {
+        background("#D2EBB5");
+      } else {
+        background("rgb(238,178,178)");
+      }
+    }
+
+    function desenhaJogadores() {
+      textSize(40);
+      fill("#444");
+      text("🚗", xJogador1, 100);  // Jogador 1
+      text("🏎️", xJogador2, 250); // Jogador 2
+    }
+
+    function desenhaLinhaDeChegada() {
+      stroke(0);
+      strokeWeight(4);
+      line(350, 0, 350, height);
+      noStroke();
+    }
+
+    function verificaVencedor() {
+      if (vencedor !== "") return;
+
+      if (xJogador1 > 350) {
+        vencedor = "Jogador 1 venceu! 🥇";
+        exibirVencedor(vencedor);
+        noLoop();
+      }
+      if (xJogador2 > 350) {
+        vencedor = "Jogador 2 venceu! 🏁";
+        exibirVencedor(vencedor);
+        noLoop();
+      }
+    }
+
+    function exibirVencedor(texto) {
+      fill("#FF5722");
+      textSize(28);
+      textAlign(CENTER, CENTER);
+      text(texto, width / 2, height / 2);
+    }
+
+    function keyPressed() {
+      if (key === 'a' || key === 'A') {
+        xJogador1 += 15;
+      }
+      if (key === 'l' || key === 'L') {
+        xJogador2 += 15;
+      }
+    }
+
+    function reiniciarJogo() {
+      xJogador1 = 50;
+      xJogador2 = 50;
+      vencedor = "";
+      loop();
+    }
+  </script>
+</body>
+</html>
